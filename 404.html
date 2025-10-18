@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+</head>
+<body>
+    <p>Redirecting you to the correct page...</p>
+
+    <script>
+    (function() {
+        const baseRedirect = "https://cubari.moe/read/gist/cmF3L0t1YmVyYVNjYW5zL0N1YmFyaS9tYWluL0t1YmVyYS5qc29u";
+        const inputPath = window.location.pathname.slice(1);
+
+        if(!inputPath) {
+            window.location.href = baseRedirect;
+            return;
+        }
+
+        [season, episode] = inputPath.split("-");
+
+        if(!episode) {
+            window.location.href = baseRedirect;
+            return; 
+        }
+
+        if(/^\d$/.test(season)) {
+            season = "s" + season;
+        }
+
+        [episodeMajor, episodeMinor] = episode.split(".");
+
+        episodeMajor = episodeMajor.padStart(3, "0");
+
+        if(!episodeMinor) {
+            needle = `${season}-${episodeMajor}`
+        } else {
+            needle = `${season}-${episodeMajor}.${episodeMinor}`
+        }
+
+        fetch("https://raw.githubusercontent.com/KuberaScans/Cubari/main/Kubera.json")
+            .then(response => response.json())
+            .then(json => {
+                const entries = Object.entries(json.chapters);
+
+                for (const [key, value] of entries) 
+                {
+                    if (value.title.startsWith(needle)) {
+                        window.location.href = `${baseRedirect}/${key}`;
+                        return;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching JSON:", error);
+                window.location.href = baseRedirect;
+            });
+    })
+    </script>
+</body>
+</html>
