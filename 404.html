@@ -14,16 +14,12 @@
         const baseRedirect = "https://cubari.moe/read/gist/cmF3L0t1YmVyYVNjYW5zL0N1YmFyaS9tYWluL0t1YmVyYS5qc29u";
         const inputPath = window.location.pathname.slice(1);
 
-        console.log("Input Path:", inputPath);
-        
         if(!inputPath) {
             window.location.href = baseRedirect;
             return;
         }
         
         [season, episode] = inputPath.split("-");
-        console.log("season:", season);
-        console.log("episode:", episode);
         
         if(!episode) {
             window.location.href = baseRedirect;
@@ -43,18 +39,15 @@
         } else {
             needle = `${season}-${episodeMajor}.${episodeMinor}`
         }
-        console.log("needle:", needle);
         
         fetch("https://raw.githubusercontent.com/KuberaScans/Cubari/main/Kubera.json")
         .then(response => response.json())
         .then(json => {
-            console.log("fetched json:", json);
             const entries = Object.entries(json.chapters);
 
                 for (const [key, value] of entries) 
                 {
                     if (value.title.startsWith(needle)) {
-                        console.log("matched:", value.title);
                         window.location.href = `${baseRedirect}/${key}`;
                         return;
                     }
