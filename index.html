@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecting...</title>
@@ -10,6 +9,7 @@
     <p>Redirecting you to the correct page...</p>
 
     <script>
+    (function() {
         const baseRedirect = "https://cubari.moe/read/gist/cmF3L0t1YmVyYVNjYW5zL0N1YmFyaS9tYWluL0t1YmVyYS5qc29u";
         const inputPath = window.location.pathname.slice(1);
 
@@ -56,6 +56,7 @@
                 console.error("Error fetching JSON:", error);
                 window.location.href = baseRedirect;
             });
+    })
     </script>
 </body>
 </html>
